@@ -1,0 +1,23 @@
+.card__btn {
+	background: #2ee5ac;
+	border-radius: 8px;
+	outline: none;
+	border: 0;
+	transition: scale 0.3s ease;
+
+	&:focus {
+		outline: none;
+		box-shadow: 0 0 4px #7d7d7d;
+	}
+	&:hover {
+		scale: 0.97;
+	}
+}
+
+.btn-draft {
+	background-color: #7d7d7d;
+	&:focus {
+		outline: none;
+		box-shadow: 0 0 10px #333;
+	}
+}
