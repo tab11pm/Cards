@@ -6,7 +6,7 @@ This is a simple template of cards received from the server and rendered data. T
   npm install
 ```
 
-And then you need to create an .env file and put the server url in it 
+And then you need to create an .env file and put the server url in it
 
 ```js
 VITE_API_URL= https://example.com

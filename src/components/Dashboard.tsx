@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { errorCatch } from '../api/error';
 import { axiosClassic } from '../api/interceptors';
 import Card from '../ui/Card/Card';
@@ -7,10 +7,14 @@ import { ICard } from '../types/card';
 import { ISite } from '../types/site';
 import Search from '../ui/Search/Search';
 import { useNavigate } from 'react-router-dom';
+import Loader from '../ui/Loader/Loader';
+import Error from '../ui/Error/Error';
 
 const Dashboard = () => {
 	const navigate = useNavigate();
 	const [cards, setCards] = useState<ICard[]>([]);
+	const [isLoading, setIsLoading] = useState<boolean>(false);
+	const [error, setError] = useState<string | null>(null);
 	const [filteredCards, setFilteredCards] = useState<ICard[]>([]);
 	const [sites, setSites] = useState<ISite[]>([]);
 	const [query, setQuery] = useState<string>('');
@@ -18,12 +22,17 @@ const Dashboard = () => {
 		type: string,
 		setData: (data: ICard[] | ISite[]) => void
 	) => {
+		setIsLoading(true);
 		try {
 			const res = await axiosClassic.get(`/${type}`);
 			console.log(res.data);
 			setData(res.data);
+			setIsLoading(false);
 		} catch (error) {
-			console.error(errorCatch(error));
+			setIsLoading(false);
+			const err = errorCatch(error);
+			console.error(err);
+			setError(err);
 		}
 	};
 
@@ -44,6 +53,7 @@ const Dashboard = () => {
 
 	return (
 		<div className="wrapper">
+			<Loader isLoading={isLoading} />
 			<h2>Dashboard</h2>
 
 			<Search query={query} setQuery={setQuery} cards={filteredCards} />
@@ -78,6 +88,7 @@ const Dashboard = () => {
 					</button>
 				</div>
 			)}
+			<Error Error={error} />
 		</div>
 	);
 };
